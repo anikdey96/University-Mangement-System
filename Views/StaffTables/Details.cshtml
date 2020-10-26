@@ -1,0 +1,181 @@
+﻿@model DatabaseAccess.StaffTable
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>StaffTable</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ContactNo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ContactNo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BasicSalary)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BasicSalary)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EmailAddress)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EmailAddress)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Qualification)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Qualification)
+        </dd>
+
+        <dt>
+            @{ string imgpath = Model.Photo;
+
+                <img src="@Url.Content(imgpath)" alt="Image" style="width:100px;height:150px;max-width:100%;height:auto;" />
+            }
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Photo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsActive)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsActive)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Gender)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Gender)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.HomePhone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HomePhone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Doyouhaveanydisability)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Doyouhaveanydisability)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Ifdisabilityyesthengiveusdetail)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Ifdisabilityyesthengiveusdetail)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Areyoutakinganymedication)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Areyoutakinganymedication)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Ifmedicationyesthengiveusdetail)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Ifmedicationyesthengiveusdetail)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Anycriminaloffenseagainstyou)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Anycriminaloffenseagainstyou)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Ifcriminaloffenseyesthengiveusdetail)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Ifcriminaloffenseyesthengiveusdetail)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RegistrationDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RegistrationDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DesignationTable.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DesignationTable.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UserTable.FullName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserTable.FullName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.StaffID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
