@@ -1871,6 +1871,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\EmployeePhoto\default.png" />
+    <Content Include="Content\StudentPhoto\default.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -2159,16 +2160,16 @@
     <Content Include="Views\SubmissionFeeTables\Details.cshtml" />
     <Content Include="Views\SubmissionFeeTables\Edit.cshtml" />
     <Content Include="Views\SubmissionFeeTables\Index.cshtml" />
-    <Content Include="Views\StaffTables\Create.cshtml" />
-    <Content Include="Views\StaffTables\Delete.cshtml" />
-    <Content Include="Views\StaffTables\Details.cshtml" />
-    <Content Include="Views\StaffTables\Edit.cshtml" />
-    <Content Include="Views\StaffTables\Index.cshtml" />
     <Content Include="Views\StudentTables\Create.cshtml" />
     <Content Include="Views\StudentTables\Delete.cshtml" />
     <Content Include="Views\StudentTables\Details.cshtml" />
     <Content Include="Views\StudentTables\Edit.cshtml" />
     <Content Include="Views\StudentTables\Index.cshtml" />
+    <Content Include="Views\StaffTables\Create.cshtml" />
+    <Content Include="Views\StaffTables\Delete.cshtml" />
+    <Content Include="Views\StaffTables\Details.cshtml" />
+    <Content Include="Views\StaffTables\Edit.cshtml" />
+    <Content Include="Views\StaffTables\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

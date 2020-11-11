@@ -15,7 +15,7 @@ namespace University_Mangement_System.Controllers
             return View();
         }
 
-        [HttpPost]
+      [HttpPost]
         public ActionResult LoginUser (string email, string password)
         {
             try
@@ -36,17 +36,17 @@ namespace University_Mangement_System.Controllers
 
 
                         string url = string.Empty;
-                        if (finduser[0].UserTypeID == 8)
+                        if (finduser[0].UserTypeID == 1)
                         {
                             return RedirectToAction("About");
                         }
 
-                        else if (finduser[0].UserTypeID == 8)
+                        else if (finduser[0].UserTypeID == 1)
                         {
                             return RedirectToAction("About");
                         }
 
-                        else if (finduser[0].UserTypeID == 8)
+                        else if (finduser[0].UserTypeID == 1)
                         {
                            url =  "About";
                         }

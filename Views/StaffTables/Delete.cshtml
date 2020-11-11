@@ -11,6 +11,8 @@
     <h4>StaffTable</h4>
     <hr />
     <dl class="dl-horizontal">
+       
+
         <dt>
             @Html.DisplayNameFor(model => model.Name)
         </dt>
@@ -64,10 +66,7 @@
         </dt>
 
         <dd>
-            @{ string imgpath = Model.Photo;
-            
-                <img src="@Url.Content(imgpath)" alt="Image" style="width:100px;height:150px;max-width:100%;height:auto;" />
-            }
+            @Html.DisplayFor(model => model.Photo)
         </dd>
 
         <dt>
@@ -158,13 +157,7 @@
             @Html.DisplayFor(model => model.RegistrationDate)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.DesignationTable.Title)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DesignationTable.Title)
-        </dd>
+      
 
         <dt>
             @Html.DisplayNameFor(model => model.UserTable.FullName)

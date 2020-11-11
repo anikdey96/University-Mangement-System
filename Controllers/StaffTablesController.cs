@@ -21,7 +21,7 @@ namespace University_Mangement_System.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
-            var staffTables = db.StaffTables.Include(s => s.DesignationTable).Include(s => s.UserTable);
+            var staffTables = db.StaffTables.Include(s => s.UserTable);
             return View(staffTables.ToList());
         }
 
@@ -51,7 +51,7 @@ namespace University_Mangement_System.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
-            ViewBag.DesignationID = new SelectList(db.DesignationTables, "DesignationID", "Title");
+
             ViewBag.UserID = new SelectList(db.UserTables, "UserID", "FullName");
             return View();
         }
@@ -67,9 +67,10 @@ namespace University_Mangement_System.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
+
             int userid = Convert.ToInt32(Convert.ToString(Session["UserID"]));
             staffTable.UserID = userid;
-            staffTable.Photo = "/Content/EmployeePhoto";
+            staffTable.Photo = "/Content/EmployeePhoto/default.png";
             if (ModelState.IsValid)
             {
                 db.StaffTables.Add(staffTable);
@@ -78,8 +79,8 @@ namespace University_Mangement_System.Controllers
                 if (staffTable.PhotoFile != null)
                 {
                     var folder = "/Content/EmployeePhoto";
-                    var file = string.Format("{0}.png",staffTable.StaffID);
-                    var response = FileHelper.UploadFile.UploadPhoto(staffTable.PhotoFile,  folder, file);
+                    var file = string.Format("{0}.png", staffTable.StaffID);
+                    var response = FileHelper.UploadFile.UploadPhoto(staffTable.PhotoFile, folder, file);
                     if (response)
                     {
                         var pic = string.Format("{0}/{1}", folder, file);
@@ -89,11 +90,10 @@ namespace University_Mangement_System.Controllers
                     }
                 }
 
-
                 return RedirectToAction("Index");
             }
 
-            ViewBag.DesignationID = new SelectList(db.DesignationTables, "DesignationID", "Title", staffTable.DesignationID);
+            
             ViewBag.UserID = new SelectList(db.UserTables, "UserID", "FullName", staffTable.UserID);
             return View(staffTable);
         }
@@ -114,7 +114,7 @@ namespace University_Mangement_System.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.DesignationID = new SelectList(db.DesignationTables, "DesignationID", "Title", staffTable.DesignationID);
+            
             ViewBag.UserID = new SelectList(db.UserTables, "UserID", "FullName", staffTable.UserID);
             return View(staffTable);
         }
@@ -124,43 +124,24 @@ namespace University_Mangement_System.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(StaffTable staffTable)
+        public ActionResult Edit([Bind(Include = "StaffID,UserID,TimeTableID,Name,DesignationID,ContactNo,BasicSalary,EmailAddress,Address,Qualification,Photo,Description,IsActive,Gender,HomePhone,Doyouhaveanydisability,Ifdisabilityyesthengiveusdetail,Areyoutakinganymedication,Ifmedicationyesthengiveusdetail,Anycriminaloffenseagainstyou,Ifcriminaloffenseyesthengiveusdetail,RegistrationDate")] StaffTable staffTable)
         {
             if (string.IsNullOrEmpty(Convert.ToString(Session["UserName"])))
             {
                 return RedirectToAction("Login", "Home");
             }
+
             int userid = Convert.ToInt32(Convert.ToString(Session["UserID"]));
             staffTable.UserID = userid;
             if (ModelState.IsValid)
             {
-                
-                    var folder = "/Content/EmployeePhoto";
-                    var file = string.Format("{0}.png", staffTable.StaffID);
-                    var response = FileHelper.UploadFile.UploadPhoto(staffTable.PhotoFile, folder, file);
-                    if (response)
-                    {
-                        var pic = string.Format("{0}/{1}", folder, file);
-                        staffTable.Photo = pic;
-                     
-                    }
-                
-              db.Entry(staffTable).State = EntityState.Modified;
+                db.Entry(staffTable).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
-                
             }
-            ViewBag.DesignationID = new SelectList(db.DesignationTables, "DesignationID", "Title", staffTable.DesignationID);
+            
             ViewBag.UserID = new SelectList(db.UserTables, "UserID", "FullName", staffTable.UserID);
             return View(staffTable);
-            //TempData["msg"] = "<script>alert('Change succesfully');</script>";
-
-
-
-
-
-
-
         }
 
         // GET: StaffTables/Delete/5

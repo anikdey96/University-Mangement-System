@@ -17,13 +17,21 @@ namespace University_Mangement_System.Controllers
         // GET: StudentTables
         public ActionResult Index()
         {
-            var studentTables = db.StudentTables.Include(s => s.ProgrameTable).Include(s => s.SessionTable).Include(s => s.UserTable);
+            if (string.IsNullOrEmpty(Convert.ToString(Session["UserName"])))
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            var studentTables = db.StudentTables.Include(s => s.ProgrameTable).Include(s => s.SessionTable).Include(s => s.UserTable).OrderByDescending(s => s.StudentID);
             return View(studentTables.ToList());
         }
 
         // GET: StudentTables/Details/5
         public ActionResult Details(int? id)
         {
+            if (string.IsNullOrEmpty(Convert.ToString(Session["UserName"])))
+            {
+                return RedirectToAction("Login", "Home");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -39,6 +47,10 @@ namespace University_Mangement_System.Controllers
         // GET: StudentTables/Create
         public ActionResult Create()
         {
+            if (string.IsNullOrEmpty(Convert.ToString(Session["UserName"])))
+            {
+                return RedirectToAction("Login", "Home");
+            }
             ViewBag.ClassID = new SelectList(db.ClassTables, "ClassID", "Name");
             ViewBag.ProgrameID = new SelectList(db.ProgrameTables, "ProgrameID", "Name");
             ViewBag.SessionID = new SelectList(db.SessionTables, "SessionID", "Name");
@@ -51,15 +63,36 @@ namespace University_Mangement_System.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "StudentID,SessionID,ProgrameID,UserID,Name,FatherName,DateofBirth,Gender,ContactNo,CNIC,FNIC,Photo,AdmissionDate,PreviousSchool,PreviousPercentage,EmailAddress,Address,Nationality,Religion,TribeorCaste,FathersGuardiansOccupationofProfession,FathersGuardiansPostalAddress,PhoneOffice,PhoneResident")] StudentTable studentTable)
+        public ActionResult Create(StudentTable studentTable)
         {
+            if (string.IsNullOrEmpty(Convert.ToString(Session["UserName"])))
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            int userid = Convert.ToInt32(Convert.ToString(Session["UserID"]));
+            studentTable.UserID = userid;
+            studentTable.Photo = "/Content/StudentPhoto";
+
             if (ModelState.IsValid)
             {
                 db.StudentTables.Add(studentTable);
                 db.SaveChanges();
+                if (studentTable.PhotoFile != null)
+                {
+                    var folder = "/Content/StudentPhoto";
+                    var file = string.Format("{0}.png", studentTable.StudentID);
+                    var response = FileHelper.UploadFile.UploadPhoto(studentTable.PhotoFile, folder, file);
+                    if (response)
+                    {
+                        var pic = string.Format("{0}/{1}", folder, file);
+                        studentTable.Photo = pic;
+                        db.Entry(studentTable).State = EntityState.Modified;
+                        db.SaveChanges();
+                    }
+                }
                 return RedirectToAction("Index");
             }
-
+            ViewBag.ClassID = new SelectList(db.ClassTables, "ClassID", "Name", studentTable.ClassID);
             ViewBag.ProgrameID = new SelectList(db.ProgrameTables, "ProgrameID", "Name", studentTable.ProgrameID);
             ViewBag.SessionID = new SelectList(db.SessionTables, "SessionID", "Name", studentTable.SessionID);
             ViewBag.UserID = new SelectList(db.UserTables, "UserID", "FullName", studentTable.UserID);
@@ -69,6 +102,10 @@ namespace University_Mangement_System.Controllers
         // GET: StudentTables/Edit/5
         public ActionResult Edit(int? id)
         {
+            if (string.IsNullOrEmpty(Convert.ToString(Session["UserName"])))
+            {
+                return RedirectToAction("Login", "Home");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -78,6 +115,7 @@ namespace University_Mangement_System.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.ClassID = new SelectList(db.ClassTables, "ClassID", "Name", studentTable.ClassID);
             ViewBag.ProgrameID = new SelectList(db.ProgrameTables, "ProgrameID", "Name", studentTable.ProgrameID);
             ViewBag.SessionID = new SelectList(db.SessionTables, "SessionID", "Name", studentTable.SessionID);
             ViewBag.UserID = new SelectList(db.UserTables, "UserID", "FullName", studentTable.UserID);
@@ -89,14 +127,37 @@ namespace University_Mangement_System.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "StudentID,SessionID,ProgrameID,UserID,Name,FatherName,DateofBirth,Gender,ContactNo,CNIC,FNIC,Photo,AdmissionDate,PreviousSchool,PreviousPercentage,EmailAddress,Address,Nationality,Religion,TribeorCaste,FathersGuardiansOccupationofProfession,FathersGuardiansPostalAddress,PhoneOffice,PhoneResident")] StudentTable studentTable)
+        public ActionResult Edit(StudentTable studentTable)
         {
+            if (string.IsNullOrEmpty(Convert.ToString(Session["UserName"])))
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            int userid = Convert.ToInt32(Convert.ToString(Session["UserID"]));
+            studentTable.UserID = userid;
+            studentTable.Photo = "/Content/StudentPhoto/default.png";
+
             if (ModelState.IsValid)
             {
+                if (studentTable.PhotoFile != null)
+                {
+                    var folder = "/Content/StudentPhoto/default.png";
+                    var file = string.Format("{0}.png", studentTable.StudentID);
+                    var response = FileHelper.UploadFile.UploadPhoto(studentTable.PhotoFile, folder, file);
+                    if (response)
+                    {
+                        var pic = string.Format("{0}/{1}", folder, file);
+                        studentTable.Photo = pic;
+
+                    }
+                }
+               
+
                 db.Entry(studentTable).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            ViewBag.ClassID = new SelectList(db.ClassTables, "ClassID", "Name", studentTable.ClassID);
             ViewBag.ProgrameID = new SelectList(db.ProgrameTables, "ProgrameID", "Name", studentTable.ProgrameID);
             ViewBag.SessionID = new SelectList(db.SessionTables, "SessionID", "Name", studentTable.SessionID);
             ViewBag.UserID = new SelectList(db.UserTables, "UserID", "FullName", studentTable.UserID);
@@ -106,6 +167,10 @@ namespace University_Mangement_System.Controllers
         // GET: StudentTables/Delete/5
         public ActionResult Delete(int? id)
         {
+            if (string.IsNullOrEmpty(Convert.ToString(Session["UserName"])))
+            {
+                return RedirectToAction("Login", "Home");
+            }
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -123,6 +188,10 @@ namespace University_Mangement_System.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            if (string.IsNullOrEmpty(Convert.ToString(Session["UserName"])))
+            {
+                return RedirectToAction("Login", "Home");
+            }
             StudentTable studentTable = db.StudentTables.Find(id);
             db.StudentTables.Remove(studentTable);
             db.SaveChanges();
