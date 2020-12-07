@@ -4,72 +4,102 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Promote Student", "Create", null, new { @class = "btn btn-success" })
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.SessionID)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PromoteDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AnnualFee)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IsActive)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.IsSubmit)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ClassTable.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ProgrameSessionTable.Details)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.StudentTable.Name)
-        </th>
-        <th></th>
-    </tr>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">All Students</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-condensed" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            Promote ID
+                        </th>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.SessionID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PromoteDate)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AnnualFee)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IsActive)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IsSubmit)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ClassTable.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ProgrameSessionTable.Details)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.StudentTable.Name)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.StudentPromotID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.StudentPromotID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.StudentPromotID })
-        </td>
-    </tr>
-}
+                        <th>
+                            Student
+                        </th>
 
-</table>
+                        @*<th>
+                            @Html.DisplayNameFor(model => model.SessionID)
+                        </th>*@
+                        <th>
+                            Promotion Date
+                        </th>
+                        <th>
+                            Promotion Fees
+                        </th>
+                        <th>
+                            Promotion Status
+                        </th>
+                        <th>
+                            Promotion Fees Status
+                        </th>
+                        <th>
+                            Promotion Class
+                        </th>
+                        @*<th>
+                            @Html.DisplayNameFor(model => model.ProgrameSessionTable.Details)
+                        </th>*@
+                        <th>
+                            Class Section
+                        </th>
+                        @*<th>
+                            @Html.DisplayNameFor(model => model.StudentTable.Name)
+                        </th>*@
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StudentPromotID)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StudentTable.Name)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PromoteDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AnnualFee)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsActive)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsSubmit)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ClassTable.Name)
+                        </td>
+                        @*<td>
+                            @Html.DisplayFor(modelItem => item.ProgrameSessionTable.Details)
+                        </td>*@
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SectionTable.SectionName)
+                        </td>
+
+                        <td class="btn-group">
+                            @Html.ActionLink("Edit", "Edit", new { id = item.StudentPromotID }, new { @class = "btn btn-danger" })
+                            @Html.ActionLink("Details", "Details", new { id = item.StudentPromotID }, new { @class = "btn btn-info" })
+                            @*@Html.ActionLink("Delete", "Delete", new { id = item.StudentPromotID })*@
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>

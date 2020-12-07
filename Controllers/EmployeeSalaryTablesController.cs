@@ -10,22 +10,30 @@ using DatabaseAccess;
 
 namespace University_Mangement_System.Controllers
 {
-    public class TimeTblTablesController : Controller
+    public class EmployeeSalaryTablesController : Controller
     {
         private UniversityMgtDbEntities db = new UniversityMgtDbEntities();
 
-        // GET: TimeTblTables
+        // GET: EmployeeSalaryTables
         public ActionResult Index()
         {
             if (string.IsNullOrEmpty(Convert.ToString(Session["UserName"])))
             {
                 return RedirectToAction("Login", "Home");
             }
-            var timeTblTables = db.TimeTblTables.Include(t => t.ClassSubjectTable).Include(t => t.StaffTable).Include(t => t.UserTable).OrderByDescending(e => e.TimeTableID);
-            return View(timeTblTables.ToList());
+            var employeeSalaryTables = db.EmployeeSalaryTables.Include(e => e.UserTable).Include(e => e.StaffTable);
+            return View(employeeSalaryTables.ToList());
         }
 
-        // GET: TimeTblTables/Details/5
+        public ActionResult GetSalary(string sid)
+        {
+            int staffid = Convert.ToInt32(sid);
+            var ps = db.StaffTables.Find(staffid);
+            double? salary = ps.BasicSalary;
+            return Json(new { Salary = salary }, JsonRequestBehavior.AllowGet);
+        }
+
+        // GET: EmployeeSalaryTables/Details/5
         public ActionResult Details(int? id)
         {
             if (string.IsNullOrEmpty(Convert.ToString(Session["UserName"])))
@@ -36,102 +44,105 @@ namespace University_Mangement_System.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            TimeTblTable timeTblTable = db.TimeTblTables.Find(id);
-            if (timeTblTable == null)
+            EmployeeSalaryTable employeeSalaryTable = db.EmployeeSalaryTables.Find(id);
+            if (employeeSalaryTable == null)
             {
                 return HttpNotFound();
             }
-            return View(timeTblTable);
+            return View(employeeSalaryTable);
         }
 
-        // GET: TimeTblTables/Create
+        // GET: EmployeeSalaryTables/Create
         public ActionResult Create()
         {
             if (string.IsNullOrEmpty(Convert.ToString(Session["UserName"])))
             {
                 return RedirectToAction("Login", "Home");
             }
-            ViewBag.ClassSubjectID = new SelectList(db.ClassSubjectTables, "ClassSubjectID", "Name");
-            ViewBag.StaffID = new SelectList(db.StaffTables, "StaffID", "Name");
+
+            EmployeeSalaryTable employeeSalaryTable = new EmployeeSalaryTable();
+            employeeSalaryTable.SalaryMonth = DateTime.Now.AddMonths(-1).ToString("MMMM");
+            employeeSalaryTable.SalaryDate = DateTime.Now.ToString();
+            employeeSalaryTable.SalaryYear = DateTime.Now.ToString("yyyy");
+
             ViewBag.UserID = new SelectList(db.UserTables, "UserID", "FullName");
-            return View();
+            ViewBag.StaffID = new SelectList(db.StaffTables.Where(s => s.IsActive == true), "StaffID", "Name");
+            return View(employeeSalaryTable);
         }
 
-        // POST: TimeTblTables/Create
+        // POST: EmployeeSalaryTables/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(TimeTblTable timeTblTable)
+        public ActionResult Create(EmployeeSalaryTable employeeSalaryTable)
         {
             if (string.IsNullOrEmpty(Convert.ToString(Session["UserName"])))
             {
                 return RedirectToAction("Login", "Home");
             }
             int userid = Convert.ToInt32(Convert.ToString(Session["UserID"]));
-            timeTblTable.UserID = userid;
+            employeeSalaryTable.UserID = userid;
+
             if (ModelState.IsValid)
             {
-                db.TimeTblTables.Add(timeTblTable);
+                db.EmployeeSalaryTables.Add(employeeSalaryTable);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.ClassSubjectID = new SelectList(db.ClassSubjectTables, "ClassSubjectID", "Name", timeTblTable.ClassSubjectID);
-            ViewBag.StaffID = new SelectList(db.StaffTables, "StaffID", "Name", timeTblTable.StaffID);
-            ViewBag.UserID = new SelectList(db.UserTables, "UserID", "FullName", timeTblTable.UserID);
-            return View(timeTblTable);
+            ViewBag.UserID = new SelectList(db.UserTables, "UserID", "FullName", employeeSalaryTable.UserID);
+            ViewBag.StaffID = new SelectList(db.StaffTables.Where(s => s.IsActive == true), "StaffID", "Name", employeeSalaryTable.StaffID);
+            return View(employeeSalaryTable);
         }
 
-        // GET: TimeTblTables/Edit/5
+        // GET: EmployeeSalaryTables/Edit/5
         public ActionResult Edit(int? id)
         {
             if (string.IsNullOrEmpty(Convert.ToString(Session["UserName"])))
             {
                 return RedirectToAction("Login", "Home");
             }
-
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            TimeTblTable timeTblTable = db.TimeTblTables.Find(id);
-            if (timeTblTable == null)
+            EmployeeSalaryTable employeeSalaryTable = db.EmployeeSalaryTables.Find(id);
+            if (employeeSalaryTable == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.ClassSubjectID = new SelectList(db.ClassSubjectTables, "ClassSubjectID", "Name", timeTblTable.ClassSubjectID);
-            ViewBag.StaffID = new SelectList(db.StaffTables, "StaffID", "Name", timeTblTable.StaffID);
-            ViewBag.UserID = new SelectList(db.UserTables, "UserID", "FullName", timeTblTable.UserID);
-            return View(timeTblTable);
+            ViewBag.UserID = new SelectList(db.UserTables, "UserID", "FullName", employeeSalaryTable.UserID);
+            ViewBag.StaffID = new SelectList(db.StaffTables.Where(s => s.IsActive == true), "StaffID", "Name", employeeSalaryTable.StaffID);
+            return View(employeeSalaryTable);
         }
 
-        // POST: TimeTblTables/Edit/5
+        // POST: EmployeeSalaryTables/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(TimeTblTable timeTblTable)
+        public ActionResult Edit(EmployeeSalaryTable employeeSalaryTable)
         {
             if (string.IsNullOrEmpty(Convert.ToString(Session["UserName"])))
             {
                 return RedirectToAction("Login", "Home");
             }
             int userid = Convert.ToInt32(Convert.ToString(Session["UserID"]));
-            timeTblTable.UserID = userid;
+            employeeSalaryTable.UserID = userid;
+
             if (ModelState.IsValid)
             {
-                db.Entry(timeTblTable).State = EntityState.Modified;
+                db.Entry(employeeSalaryTable).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.ClassSubjectID = new SelectList(db.ClassSubjectTables, "ClassSubjectID", "Name", timeTblTable.ClassSubjectID);
-            ViewBag.StaffID = new SelectList(db.StaffTables, "StaffID", "Name", timeTblTable.StaffID);
-            ViewBag.UserID = new SelectList(db.UserTables, "UserID", "FullName", timeTblTable.UserID);
-            return View(timeTblTable);
+            ViewBag.UserID = new SelectList(db.UserTables, "UserID", "FullName", employeeSalaryTable.UserID);
+            ViewBag.StaffID = new SelectList(db.StaffTables.Where(s => s.IsActive == true), "StaffID", "Name", employeeSalaryTable.StaffID);
+            return View(employeeSalaryTable);
         }
 
-        // GET: TimeTblTables/Delete/5
+        // GET: EmployeeSalaryTables/Delete/5
         public ActionResult Delete(int? id)
         {
             if (string.IsNullOrEmpty(Convert.ToString(Session["UserName"])))
@@ -142,15 +153,15 @@ namespace University_Mangement_System.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            TimeTblTable timeTblTable = db.TimeTblTables.Find(id);
-            if (timeTblTable == null)
+            EmployeeSalaryTable employeeSalaryTable = db.EmployeeSalaryTables.Find(id);
+            if (employeeSalaryTable == null)
             {
                 return HttpNotFound();
             }
-            return View(timeTblTable);
+            return View(employeeSalaryTable);
         }
 
-        // POST: TimeTblTables/Delete/5
+        // POST: EmployeeSalaryTables/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
@@ -159,8 +170,8 @@ namespace University_Mangement_System.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
-            TimeTblTable timeTblTable = db.TimeTblTables.Find(id);
-            db.TimeTblTables.Remove(timeTblTable);
+            EmployeeSalaryTable employeeSalaryTable = db.EmployeeSalaryTables.Find(id);
+            db.EmployeeSalaryTables.Remove(employeeSalaryTable);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

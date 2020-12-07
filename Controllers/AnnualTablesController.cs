@@ -21,7 +21,7 @@ namespace University_Mangement_System.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
-            var annualTables = db.AnnualTables.Include(a => a.ProgrameTable).Include(a => a.UserTable).Where(p=>p.IsActive==true);
+            var annualTables = db.AnnualTables.Include(a => a.ProgrameTable).Include(a => a.UserTable).Where(p => p.IsActive == true);
             return View(annualTables.ToList());
         }
 

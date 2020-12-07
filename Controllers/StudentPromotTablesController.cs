@@ -21,9 +21,34 @@ namespace University_Mangement_System.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
-            var studentPromotTables = db.StudentPromotTables.Include(s => s.ClassTable).Include(s => s.ProgrameSessionTable).Include(s => s.StudentTable);
+            var studentPromotTables = db.StudentPromotTables.Include(s => s.ClassTable).Include(s => s.ProgrameSessionTable).Include(s => s.SectionTable).Include(s => s.StudentTable).OrderByDescending(s => s.StudentPromotID);
             return View(studentPromotTables.ToList());
         }
+
+        public ActionResult GetPromotClsList(string sid)
+        {
+            int studentid = Convert.ToInt32(sid);
+            var student = db.StudentTables.Find(studentid);
+            {
+                List<ClassTable> classTable = new List<ClassTable>();
+                foreach (var cls in db.ClassTables.Where(cls => cls.ClassID > student.ClassID))
+                {
+                    classTable.Add(new ClassTable { ClassID = cls.ClassID, Name = cls.Name });
+                }
+                return Json(new { data = classTable }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+            public ActionResult GetAnnulFee(string sid)
+            {
+                int progressid = Convert.ToInt32(sid);
+                var ps = db.ProgrameSessionTables.Find(progressid);
+                var annulfee = db.AnnualTables.Where(a => a.AnnualID == ps.ProgrameID).SingleOrDefault();
+                double? fee = annulfee.Fees;
+                return Json(new { fees = fee }, JsonRequestBehavior.AllowGet);
+            }
+
+        
 
         // GET: StudentPromotTables/Details/5
         public ActionResult Details(int? id)
@@ -53,6 +78,7 @@ namespace University_Mangement_System.Controllers
             }
             ViewBag.ClassID = new SelectList(db.ClassTables, "ClassID", "Name");
             ViewBag.ProgrameSessionID = new SelectList(db.ProgrameSessionTables, "ProgrameSessionID", "Details");
+            ViewBag.SectionID = new SelectList(db.SectionTables, "SectionID", "SectionName");
             ViewBag.StudentID = new SelectList(db.StudentTables, "StudentID", "Name");
             return View();
         }
@@ -62,12 +88,16 @@ namespace University_Mangement_System.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "StudentPromotID,StudentID,ClassID,SessionID,ProgrameSessionID,PromoteDate,AnnualFee,IsActive,IsSubmit")] StudentPromotTable studentPromotTable)
+        public ActionResult Create(StudentPromotTable studentPromotTable)
         {
             if (string.IsNullOrEmpty(Convert.ToString(Session["UserName"])))
             {
                 return RedirectToAction("Login", "Home");
             }
+
+            //int userid = Convert.ToInt32(Convert.ToString(Session["UserID"]));
+            //studentPromotTable.UserID = userid;
+
             if (ModelState.IsValid)
             {
                 db.StudentPromotTables.Add(studentPromotTable);
@@ -77,6 +107,7 @@ namespace University_Mangement_System.Controllers
 
             ViewBag.ClassID = new SelectList(db.ClassTables, "ClassID", "Name", studentPromotTable.ClassID);
             ViewBag.ProgrameSessionID = new SelectList(db.ProgrameSessionTables, "ProgrameSessionID", "Details", studentPromotTable.ProgrameSessionID);
+            ViewBag.SectionID = new SelectList(db.SectionTables, "SectionID", "SectionName", studentPromotTable.SectionID);
             ViewBag.StudentID = new SelectList(db.StudentTables, "StudentID", "Name", studentPromotTable.StudentID);
             return View(studentPromotTable);
         }
@@ -99,6 +130,7 @@ namespace University_Mangement_System.Controllers
             }
             ViewBag.ClassID = new SelectList(db.ClassTables, "ClassID", "Name", studentPromotTable.ClassID);
             ViewBag.ProgrameSessionID = new SelectList(db.ProgrameSessionTables, "ProgrameSessionID", "Details", studentPromotTable.ProgrameSessionID);
+            ViewBag.SectionID = new SelectList(db.SectionTables, "SectionID", "SectionName", studentPromotTable.SectionID);
             ViewBag.StudentID = new SelectList(db.StudentTables, "StudentID", "Name", studentPromotTable.StudentID);
             return View(studentPromotTable);
         }
@@ -108,12 +140,15 @@ namespace University_Mangement_System.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "StudentPromotID,StudentID,ClassID,SessionID,ProgrameSessionID,PromoteDate,AnnualFee,IsActive,IsSubmit")] StudentPromotTable studentPromotTable)
+        public ActionResult Edit(StudentPromotTable studentPromotTable)
         {
             if (string.IsNullOrEmpty(Convert.ToString(Session["UserName"])))
             {
                 return RedirectToAction("Login", "Home");
             }
+            //int userid = Convert.ToInt32(Convert.ToString(Session["UserID"]));
+            //studentPromotTable.UserID = userid;
+            
             if (ModelState.IsValid)
             {
                 db.Entry(studentPromotTable).State = EntityState.Modified;
@@ -122,6 +157,7 @@ namespace University_Mangement_System.Controllers
             }
             ViewBag.ClassID = new SelectList(db.ClassTables, "ClassID", "Name", studentPromotTable.ClassID);
             ViewBag.ProgrameSessionID = new SelectList(db.ProgrameSessionTables, "ProgrameSessionID", "Details", studentPromotTable.ProgrameSessionID);
+            ViewBag.SectionID = new SelectList(db.SectionTables, "SectionID", "SectionName", studentPromotTable.SectionID);
             ViewBag.StudentID = new SelectList(db.StudentTables, "StudentID", "Name", studentPromotTable.StudentID);
             return View(studentPromotTable);
         }
@@ -150,10 +186,10 @@ namespace University_Mangement_System.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            if (string.IsNullOrEmpty(Convert.ToString(Session["UserName"])))
-            {
-                return RedirectToAction("Login", "Home");
-            }
+            //if (string.IsNullOrEmpty(Convert.ToString(Session["UserName"])))
+            //{
+            //    return RedirectToAction("Login", "Home");
+            //}
             StudentPromotTable studentPromotTable = db.StudentPromotTables.Find(id);
             db.StudentPromotTables.Remove(studentPromotTable);
             db.SaveChanges();

@@ -21,9 +21,20 @@ namespace University_Mangement_System.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
-            var submissionFeeTables = db.SubmissionFeeTables.Include(s => s.ProgrameTable).Include(s => s.StudentTable).Include(s => s.UserTable).Include(s => s.ClassTable);
+            var submissionFeeTables = db.SubmissionFeeTables.Include(s => s.ProgrameTable).Include(s => s.StudentTable).Include(s => s.UserTable).Include(s => s.ClassTable).OrderByDescending(s => s.SubmissionFeeID);
             return View(submissionFeeTables.ToList());
         }
+
+       
+
+        public ActionResult GetByPromotID(string sid)
+        {
+            int promoteid = Convert.ToInt32(sid);
+            var promoterecord = db.StudentPromotTables.Find(promoteid);
+            return Json(new { StudentID = promoterecord.StudentID, ClassID = promoterecord.ClassID, ProgrameID = promoterecord.ProgrameSessionTable.ProgrameID}, JsonRequestBehavior.AllowGet);
+        }
+
+
 
         // GET: SubmissionFeeTables/Details/5
         public ActionResult Details(int? id)

@@ -27,7 +27,10 @@ namespace University_Mangement_System.Controllers
                     {
                         Session["UserID"] = finduser[0].UserID;
                         Session ["UserTypeID"] = finduser[0].UserTypeID;
-                        Session ["FullName"] = finduser[0].FullName;
+                        Session["FirstName"] = finduser[0].FirstName;
+                        Session["LastName"] = finduser[0].LastName;
+                        Session["BirthDate"] = finduser[0].BirthDate;
+                        //Session ["FullName"] = finduser[0].FullName;
                         Session ["UserName"] = finduser[0].UserName;
                         Session ["Password"] = finduser[0].Password;
                         Session ["ContactNo"] = finduser[0].ContactNo;
@@ -41,15 +44,15 @@ namespace University_Mangement_System.Controllers
                             return RedirectToAction("About");
                         }
 
-                        else if (finduser[0].UserTypeID == 1)
+                        else if (finduser[0].UserTypeID == 2)
                         {
-                            return RedirectToAction("About");
+                            return RedirectToAction("Contact");
                         }
 
-                        else if (finduser[0].UserTypeID == 1)
-                        {
-                           url =  "About";
-                        }
+                        //else if (finduser[0].UserTypeID == 1)
+                        //{
+                        //   url =  "About";
+                        //}
                         else
                         {
                             url = "About";
@@ -62,8 +65,11 @@ namespace University_Mangement_System.Controllers
                     {
                         Session["UserID"] = string.Empty;
                         Session["UserTypeID"] = string.Empty;
-                        Session["FullName"] = string.Empty;
+                        //Session["FullName"] = string.Empty;
                         Session["UserName"] = string.Empty;
+                        Session["FirstName"] = string.Empty;
+                        Session["LastName"] = string.Empty;
+                        Session["BirthDate"] = string.Empty;
                         Session["Password"] = string.Empty;
                         Session["ContactNo"] = string.Empty;
                         Session["EmailAddress"] = string.Empty;
@@ -78,8 +84,11 @@ namespace University_Mangement_System.Controllers
 
                     Session["UserID"] = string.Empty;
                     Session["UserTypeID"] = string.Empty;
-                    Session["FullName"] = string.Empty;
+                    //Session["FullName"] = string.Empty;
                     Session["UserName"] = string.Empty;
+                    Session["FirstName"] = string.Empty;
+                    Session["LastName"] = string.Empty;
+                    Session["BirthDate"] = string.Empty;
                     Session["Password"] = string.Empty;
                     Session["ContactNo"] = string.Empty;
                     Session["EmailAddress"] = string.Empty;
@@ -93,8 +102,11 @@ namespace University_Mangement_System.Controllers
             {
                 Session["UserID"] = string.Empty;
                 Session["UserTypeID"] = string.Empty;
-                Session["FullName"] = string.Empty;
+                //Session["FullName"] = string.Empty;
                 Session["UserName"] = string.Empty;
+                Session["FirstName"] = string.Empty;
+                Session["LastName"] = string.Empty;
+                Session["BirthDate"] = string.Empty;
                 Session["Password"] = string.Empty;
                 Session["ContactNo"] = string.Empty;
                 Session["EmailAddress"] = string.Empty;
@@ -114,12 +126,23 @@ namespace University_Mangement_System.Controllers
             return View();
         }
 
+        public ActionResult Contact()
+        {
+            ViewBag.Message = "Welcome to Jashore University Of Science & Technology Arena";
+
+            return View();
+        }
+
+
         public ActionResult Logout()
         {
             Session["UserID"] = string.Empty;
             Session["UserTypeID"] = string.Empty;
-            Session["FullName"] = string.Empty;
+            //Session["FullName"] = string.Empty;
             Session["UserName"] = string.Empty;
+            Session["FirstName"] = string.Empty;
+            Session["LastName"] = string.Empty;
+            Session["BirthDate"] = string.Empty;
             Session["Password"] = string.Empty;
             Session["ContactNo"] = string.Empty;
             Session["EmailAddress"] = string.Empty;

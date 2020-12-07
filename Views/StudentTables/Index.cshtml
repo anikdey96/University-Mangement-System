@@ -19,6 +19,9 @@
                 <thead>
                     <tr>
                         <th>
+                            Student ID
+                        </th>
+                        <th>
                             Name
                         </th>
                         <th>
@@ -46,37 +49,40 @@
                 <tbody>
                     @foreach (var item in Model)
                     {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.FatherName)
-                            </td>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StudentID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FatherName)
+                        </td>
 
-                            <td>
-                                @Html.DisplayFor(modelItem => item.ContactNo)
-                            </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ContactNo)
+                        </td>
 
-                            <td>
-                                @if (!string.IsNullOrEmpty(item.Photo))
-                                {
-                                    <img src="@Url.Content(item.Photo)" alt="Image" style="width:100px;height:150px;max-width:100%;height:auto" />
-                                }
-                            </td>
+                        <td>
+                            @if (!string.IsNullOrEmpty(item.Photo))
+                            {
+                                <img src="@Url.Content(item.Photo)" alt="Image" style="width:100px;height:150px;max-width:100%;height:auto" />
+                            }
+                        </td>
 
-                            <td>
-                                @Html.DisplayFor(modelItem => item.ClassTable.Name)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.UserTable.FullName)
-                            </td>
-                            <td>
-                                @Html.ActionLink("Edit", "Edit", new { id = item.StudentID }, new { @class = "btn btn-danger" })
-                                @Html.ActionLink("Details", "Details", new { id = item.StudentID }, new { @class = "btn btn-info" })
-                                @*@Html.ActionLink("Delete", "Delete", new { id = item.StudentID }, new { @class = "btn btn-danger" })*@
-                            </td>
-                        </tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ClassTable.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UserTable.FullName)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { id = item.StudentID }, new { @class = "btn btn-danger" })
+                            @Html.ActionLink("Details", "Details", new { id = item.StudentID }, new { @class = "btn btn-info" })
+                            @*@Html.ActionLink("Delete", "Delete", new { id = item.StudentID }, new { @class = "btn btn-danger" })*@
+                        </td>
+                    </tr>
                     }
 
                 </tbody>

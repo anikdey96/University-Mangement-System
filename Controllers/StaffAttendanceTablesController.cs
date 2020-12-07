@@ -51,7 +51,7 @@ namespace University_Mangement_System.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
-            ViewBag.StaffID = new SelectList(db.StaffTables, "StaffID", "Name");
+            ViewBag.StaffID = new SelectList(db.StaffTables.Where(s=>s.IsActive == true), "StaffID", "Name");
             return View();
         }
 

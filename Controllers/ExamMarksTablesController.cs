@@ -21,7 +21,9 @@ namespace University_Mangement_System.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
-            var examMarksTables = db.ExamMarksTables.Include(e => e.StudentTable).Include(e => e.UserTable).Include(e => e.ExamTable);
+
+           
+            var examMarksTables = db.ExamMarksTables.Include(e => e.ClassSubjectTable).Include(e => e.ExamTable).Include(e => e.StudentTable).Include(e => e.UserTable).OrderByDescending(e => e.MarksID);
             return View(examMarksTables.ToList());
         }
 
@@ -32,6 +34,8 @@ namespace University_Mangement_System.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
+
+   
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -51,12 +55,36 @@ namespace University_Mangement_System.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
-            ViewBag.ExamID = new SelectList(db.ExamTables, "ExamID", "Title");
+
+         
             ViewBag.ClassSubjectID = new SelectList(db.ClassSubjectTables, "ClassSubjectID", "Name");
+            ViewBag.ExamID = new SelectList(db.ExamTables, "ExamID", "Title");
             ViewBag.StudentID = new SelectList(db.StudentTables, "StudentID", "Name");
             ViewBag.UserID = new SelectList(db.UserTables, "UserID", "FullName");
-            
             return View();
+        }
+
+        public ActionResult GetByPromotID(string sid)
+        {
+            int promoteid = Convert.ToInt32(sid);
+            var promoterecord = db.StudentPromotTables.Find(promoteid);
+            List<StudentTable> stdlist = new List<StudentTable>();
+            stdlist.Add(new StudentTable { StudentID = promoterecord.StudentID, Name = promoterecord.StudentTable.Name });
+            //var student = promoterecord.StudentTable.Name;
+            List<ClassSubjectTable> listsubjects = new List<ClassSubjectTable>();
+            var classsubjects = db.ClassSubjectTables.Where(cls => cls.ClassID == promoterecord.ClassID && cls.IsActive == true);
+            foreach (var subj in classsubjects)
+            {
+                listsubjects.Add(new ClassSubjectTable { ClassSubjectID = subj.ClassSubjectID, Name = subj.Name});
+            }
+            return Json(new { std = stdlist, subjects = listsubjects }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetTotalMarks(string sid)
+        {
+            int classsubjectid = Convert.ToInt32(sid);
+            var totalmarks = db.ClassSubjectTables.Find(classsubjectid).SubjectTable.TotalMarks;
+            return Json(new { data = totalmarks}, JsonRequestBehavior.AllowGet);
         }
 
         // POST: ExamMarksTables/Create
@@ -79,11 +107,11 @@ namespace University_Mangement_System.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.ExamID = new SelectList(db.ExamTables, "ExamID", "Title", examMarksTable.ExamID);
+
             ViewBag.ClassSubjectID = new SelectList(db.ClassSubjectTables, "ClassSubjectID", "Name", examMarksTable.ClassSubjectID);
+            ViewBag.ExamID = new SelectList(db.ExamTables, "ExamID", "Title", examMarksTable.ExamID);
             ViewBag.StudentID = new SelectList(db.StudentTables, "StudentID", "Name", examMarksTable.StudentID);
             ViewBag.UserID = new SelectList(db.UserTables, "UserID", "FullName", examMarksTable.UserID);
-            
             return View(examMarksTable);
         }
 
@@ -94,6 +122,8 @@ namespace University_Mangement_System.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
+
+       
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -103,10 +133,10 @@ namespace University_Mangement_System.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.StudentID = new SelectList(db.StudentTables, "StudentID", "Name", examMarksTable.StudentID);
-            ViewBag.ClassSubjectID = new SelectList(db.ClassSubjectTables, "ClassSubjectID", "Name");
-            ViewBag.UserID = new SelectList(db.UserTables, "UserID", "FullName", examMarksTable.UserID);
+            ViewBag.ClassSubjectID = new SelectList(db.ClassSubjectTables, "ClassSubjectID", "Name", examMarksTable.ClassSubjectID);
             ViewBag.ExamID = new SelectList(db.ExamTables, "ExamID", "Title", examMarksTable.ExamID);
+            ViewBag.StudentID = new SelectList(db.StudentTables, "StudentID", "Name", examMarksTable.StudentID);
+            ViewBag.UserID = new SelectList(db.UserTables, "UserID", "FullName", examMarksTable.UserID);
             return View(examMarksTable);
         }
 
@@ -117,23 +147,17 @@ namespace University_Mangement_System.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(ExamMarksTable examMarksTable)
         {
-            if (string.IsNullOrEmpty(Convert.ToString(Session["UserName"])))
-            {
-                return RedirectToAction("Login", "Home");
-            }
-
-            int userid = Convert.ToInt32(Convert.ToString(Session["UserID"]));
-            examMarksTable.UserID = userid;
+            
             if (ModelState.IsValid)
             {
                 db.Entry(examMarksTable).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.StudentID = new SelectList(db.StudentTables, "StudentID", "Name", examMarksTable.StudentID);
-            ViewBag.ClassSubjectID = new SelectList(db.ClassSubjectTables, "ClassSubjectID", "Name");
-            ViewBag.UserID = new SelectList(db.UserTables, "UserID", "FullName", examMarksTable.UserID);
+            ViewBag.ClassSubjectID = new SelectList(db.ClassSubjectTables, "ClassSubjectID", "Name", examMarksTable.ClassSubjectID);
             ViewBag.ExamID = new SelectList(db.ExamTables, "ExamID", "Title", examMarksTable.ExamID);
+            ViewBag.StudentID = new SelectList(db.StudentTables, "StudentID", "Name", examMarksTable.StudentID);
+            ViewBag.UserID = new SelectList(db.UserTables, "UserID", "FullName", examMarksTable.UserID);
             return View(examMarksTable);
         }
 
@@ -144,6 +168,8 @@ namespace University_Mangement_System.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
+
+          
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -161,10 +187,6 @@ namespace University_Mangement_System.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            if (string.IsNullOrEmpty(Convert.ToString(Session["UserName"])))
-            {
-                return RedirectToAction("Login", "Home");
-            }
             ExamMarksTable examMarksTable = db.ExamMarksTables.Find(id);
             db.ExamMarksTables.Remove(examMarksTable);
             db.SaveChanges();

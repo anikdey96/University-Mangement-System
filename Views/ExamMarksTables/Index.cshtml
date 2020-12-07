@@ -12,52 +12,52 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.ClassSubjectID)
+            Exam
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.TotalMarks)
+            Student
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ObtainMarks)
+            Subject
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.StudentTable.Name)
+            Total Marks
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.UserTable.FullName)
+            Obtain Marks
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ExamTable.Title)
+            User
         </th>
-        <th></th>
+        <th>Actions</th>
     </tr>
 
 @foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.ClassSubjectID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TotalMarks)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ObtainMarks)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.StudentTable.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UserTable.FullName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ExamTable.Title)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.MarksID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.MarksID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.MarksID })
-        </td>
-    </tr>
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.ExamTable.Title)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.StudentTable.Name)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.ClassSubjectTable.Name)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.TotalMarks)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.ObtainMarks)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.UserTable.FullName)
+    </td>
+    <td>
+        @Html.ActionLink("Edit", "Edit", new { id = item.MarksID }, new { @class = "btn btn-info" })
+        @Html.ActionLink("Details", "Details", new { id = item.MarksID }, new { @class = "btn btn-info" })
+        @Html.ActionLink("Delete", "Delete", new { id = item.MarksID })
+    </td>
+</tr>
 }
 
 </table>

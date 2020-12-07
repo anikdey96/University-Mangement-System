@@ -11,14 +11,6 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.ClassSubjectID)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ClassSubjectID)
-        </dd>
-
-        <dt>
             @Html.DisplayNameFor(model => model.TotalMarks)
         </dt>
 
@@ -35,6 +27,22 @@
         </dd>
 
         <dt>
+            @Html.DisplayNameFor(model => model.ClassSubjectTable.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ClassSubjectTable.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ExamTable.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ExamTable.Title)
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.StudentTable.Name)
         </dt>
 
@@ -48,14 +56,6 @@
 
         <dd>
             @Html.DisplayFor(model => model.UserTable.FullName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ExamTable.Title)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ExamTable.Title)
         </dd>
 
     </dl>

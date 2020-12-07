@@ -174,6 +174,7 @@
     <Compile Include="Controllers\ClassSubjectTablesController.cs" />
     <Compile Include="Controllers\ClassTablesController.cs" />
     <Compile Include="Controllers\DesignationTablesController.cs" />
+    <Compile Include="Controllers\EmployeeSalaryTablesController.cs" />
     <Compile Include="Controllers\ExamMarksTablesController.cs" />
     <Compile Include="Controllers\ExamTablesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -186,6 +187,7 @@
     <Compile Include="Controllers\StudentTablesController.cs" />
     <Compile Include="Controllers\SubjectTablesController.cs" />
     <Compile Include="Controllers\SubmissionFeeTablesController.cs" />
+    <Compile Include="Controllers\TimeTableReportsController.cs" />
     <Compile Include="Controllers\TimeTblTablesController.cs" />
     <Compile Include="Controllers\UserTablesController.cs" />
     <Compile Include="Controllers\UserTypeTablesController.cs" />
@@ -2130,21 +2132,11 @@
     <Content Include="Views\ExamTables\Details.cshtml" />
     <Content Include="Views\ExamTables\Edit.cshtml" />
     <Content Include="Views\ExamTables\Index.cshtml" />
-    <Content Include="Views\ExamMarksTables\Create.cshtml" />
-    <Content Include="Views\ExamMarksTables\Delete.cshtml" />
-    <Content Include="Views\ExamMarksTables\Details.cshtml" />
-    <Content Include="Views\ExamMarksTables\Edit.cshtml" />
-    <Content Include="Views\ExamMarksTables\Index.cshtml" />
     <Content Include="Views\TimeTblTables\Create.cshtml" />
     <Content Include="Views\TimeTblTables\Delete.cshtml" />
     <Content Include="Views\TimeTblTables\Details.cshtml" />
     <Content Include="Views\TimeTblTables\Edit.cshtml" />
     <Content Include="Views\TimeTblTables\Index.cshtml" />
-    <Content Include="Views\StudentPromotTables\Create.cshtml" />
-    <Content Include="Views\StudentPromotTables\Delete.cshtml" />
-    <Content Include="Views\StudentPromotTables\Details.cshtml" />
-    <Content Include="Views\StudentPromotTables\Edit.cshtml" />
-    <Content Include="Views\StudentPromotTables\Index.cshtml" />
     <Content Include="Views\AttendanceTables\Create.cshtml" />
     <Content Include="Views\AttendanceTables\Delete.cshtml" />
     <Content Include="Views\AttendanceTables\Details.cshtml" />
@@ -2170,6 +2162,23 @@
     <Content Include="Views\StaffTables\Details.cshtml" />
     <Content Include="Views\StaffTables\Edit.cshtml" />
     <Content Include="Views\StaffTables\Index.cshtml" />
+    <Content Include="Views\StudentPromotTables\Create.cshtml" />
+    <Content Include="Views\StudentPromotTables\Delete.cshtml" />
+    <Content Include="Views\StudentPromotTables\Details.cshtml" />
+    <Content Include="Views\StudentPromotTables\Edit.cshtml" />
+    <Content Include="Views\StudentPromotTables\Index.cshtml" />
+    <Content Include="Views\EmployeeSalaryTables\Create.cshtml" />
+    <Content Include="Views\EmployeeSalaryTables\Delete.cshtml" />
+    <Content Include="Views\EmployeeSalaryTables\Details.cshtml" />
+    <Content Include="Views\EmployeeSalaryTables\Edit.cshtml" />
+    <Content Include="Views\EmployeeSalaryTables\Index.cshtml" />
+    <Content Include="Views\ExamMarksTables\Create.cshtml" />
+    <Content Include="Views\ExamMarksTables\Delete.cshtml" />
+    <Content Include="Views\ExamMarksTables\Details.cshtml" />
+    <Content Include="Views\ExamMarksTables\Edit.cshtml" />
+    <Content Include="Views\ExamMarksTables\Index.cshtml" />
+    <Content Include="Views\TimeTableReports\TeacherReport.cshtml" />
+    <Content Include="Views\TimeTableReports\TeacherWiseReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
